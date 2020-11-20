@@ -1,0 +1,31 @@
+server:
+  port: 19870
+
+spring:
+  application:
+    name: product
+  flyway:
+    locations: classpath:/db/migration
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:mydatabase_p;MODE=PostgreSQL
+    username: sa
+    password:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: false
+
+eureka:
+  client:
+    serviceUrl:
+        defaultZone: ${EUREKA_URI:http://localhost:8900/eureka}
+  instance:
+    preferIpAddress: true
+  fetchRegistry: true
