@@ -6,16 +6,17 @@ import dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import order.server.entities.Order;
 import order.server.repositories.OrderRepository;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,13 +47,10 @@ public class OrderController {
 
 
         //"http://product/list_products",
-        List<Long> id = new ArrayList<>();
-        id.add(1l);
-        id.add(2l);
-        HttpEntity<List> entity = new HttpEntity<List>(id);
-        ResponseEntity restExchange = restTemplate.exchange("http://product/list_products", HttpMethod.GET, entity, List.class);
-        List<ProductDto> productDtos = (List<ProductDto>)restExchange.getBody();
-
+        Long[] listId = {1l,2l};
+        Map<String, String> params = new HashMap<>();
+        params.put("listId", "1,2");
+        List<ProductDto> productDtos = restTemplate.getForObject("http://product/list_products", List.class, params);
         return productDtos;
 
     }
